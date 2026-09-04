@@ -85,9 +85,35 @@ export default function App() {
     setTimeout(() => setToast(null), 3500);
   };
 
+  // Helper to sync user into kara111_local_users list for local storage persistence
+  const syncUserToLocalList = (userData: Partial<UserProfile> & { username: string; password?: string }) => {
+    try {
+      const existing: any[] = JSON.parse(localStorage.getItem('kara111_local_users') || '[]');
+      const idx = existing.findIndex((u) => u.username?.toLowerCase() === userData.username.toLowerCase());
+      if (idx >= 0) {
+        existing[idx] = { ...existing[idx], ...userData };
+      } else {
+        existing.push(userData);
+      }
+      localStorage.setItem('kara111_local_users', JSON.stringify(existing));
+    } catch (e) {}
+  };
+
   // Restore session from localStorage on mount
   useEffect(() => {
     const savedToken = localStorage.getItem('kara111_token');
+    const savedUser = localStorage.getItem('kara111_user');
+
+    // Instant local restore to prevent UI flicker
+    if (savedUser) {
+      try {
+        const parsed = JSON.parse(savedUser);
+        if (parsed && parsed.username) {
+          setUser(parsed);
+        }
+      } catch (e) {}
+    }
+
     if (savedToken) {
       setToken(savedToken);
       fetchUserProfile(savedToken);
@@ -105,13 +131,14 @@ export default function App() {
       });
       if (res.ok) {
         const data = await res.json();
-        setUser(data.user);
-      } else {
-        localStorage.removeItem('kara111_token');
-        setToken(null);
+        if (data.user) {
+          setUser(data.user);
+          localStorage.setItem('kara111_user', JSON.stringify(data.user));
+          syncUserToLocalList(data.user);
+        }
       }
     } catch (e) {
-      console.error(e);
+      console.error('Session sync error:', e);
     }
   };
 
@@ -137,33 +164,116 @@ export default function App() {
     }
   };
 
-  // Login handler
+  // Unified Balance Update Handler: updates state, localStorage, and server db
+  const handleBalanceUpdate = (newBal: number) => {
+    setUser((prev) => {
+      if (!prev) return null;
+      const updated = { ...prev, balance: newBal };
+      localStorage.setItem('kara111_user', JSON.stringify(updated));
+      syncUserToLocalList(updated);
+      return updated;
+    });
+
+    if (user?.id) {
+      fetch('/api/user/balance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id, balance: newBal })
+      }).catch(() => {});
+    }
+  };
+
+  // Robust Dual-Mode Login handler (Backend API + Local Storage fallback)
   const handleLogin = async (username: string, pass: string): Promise<boolean> => {
+    const cleanUser = username.trim();
+
+    // 1. Try server backend login
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password: pass })
+        body: JSON.stringify({ username: cleanUser, password: pass })
       });
 
-      const data = await res.json();
-      if (res.ok && data.success) {
-        setUser(data.user);
-        setToken(data.token);
-        localStorage.setItem('kara111_token', data.token);
-        showToast(`Selamat datang di KARA111, ${data.user.username}!`, 'success');
+      const contentType = res.headers.get('content-type');
+      if (res.ok && contentType && contentType.includes('application/json')) {
+        const data = await res.json();
+        if (data.success && data.user) {
+          setUser(data.user);
+          setToken(data.token);
+          localStorage.setItem('kara111_token', data.token);
+          localStorage.setItem('kara111_user', JSON.stringify(data.user));
+          syncUserToLocalList({ ...data.user, password: pass });
+          showToast(`Selamat datang di KARA111, ${data.user.username}!`, 'success');
+          return true;
+        }
+      }
+    } catch (e) {
+      // Backend not running or network issue -> fallback to localStorage
+    }
+
+    // 2. Check localStorage accounts
+    try {
+      const localUsers: any[] = JSON.parse(localStorage.getItem('kara111_local_users') || '[]');
+      const found = localUsers.find(
+        (u) => u.username?.toLowerCase() === cleanUser.toLowerCase() && u.password === pass
+      );
+
+      if (found) {
+        const userObj: UserProfile = {
+          id: found.id || `user-${Date.now()}`,
+          username: found.username,
+          fullName: found.fullName || found.username,
+          phone: found.phone || '',
+          bankName: found.bankName || 'BCA',
+          accountNumber: found.accountNumber || '',
+          accountHolder: found.accountHolder || found.fullName || found.username,
+          balance: typeof found.balance === 'number' ? found.balance : 50000,
+          vipLevel: found.vipLevel || 'Bronze',
+          favorites: found.favorites || ['spaceman', 'sweet-bonanza', 'mahjong-ways-2']
+        };
+        const localToken = btoa(`${userObj.id}:${Date.now()}`);
+        setUser(userObj);
+        setToken(localToken);
+        localStorage.setItem('kara111_token', localToken);
+        localStorage.setItem('kara111_user', JSON.stringify(userObj));
+        showToast(`Selamat datang di KARA111, ${userObj.username}!`, 'success');
         return true;
       }
-      return false;
-    } catch (e) {
-      return false;
+    } catch (e) {}
+
+    // 3. Demo account fallback
+    if (cleanUser.toLowerCase() === 'kara_member' && pass === 'password123') {
+      const demoUser: UserProfile = {
+        id: 'user-demo-1',
+        username: 'kara_member',
+        fullName: 'Member Setia Kara111',
+        phone: '081234567890',
+        bankName: 'BCA',
+        accountNumber: '8271928374',
+        accountHolder: 'KARA MEMBER',
+        balance: 250000,
+        vipLevel: 'Gold',
+        favorites: ['spaceman', 'sweet-bonanza', 'mahjong-ways-2']
+      };
+      const demoToken = btoa(`user-demo-1:${Date.now()}`);
+      setUser(demoUser);
+      setToken(demoToken);
+      localStorage.setItem('kara111_token', demoToken);
+      localStorage.setItem('kara111_user', JSON.stringify(demoUser));
+      showToast(`Selamat datang di KARA111, ${demoUser.username}!`, 'success');
+      return true;
     }
+
+    return false;
   };
 
   const handleRegisterSuccess = (newUser: UserProfile, newToken: string) => {
     setUser(newUser);
     setToken(newToken);
     localStorage.setItem('kara111_token', newToken);
+    localStorage.setItem('kara111_user', JSON.stringify(newUser));
+    syncUserToLocalList(newUser);
     showToast(`Akun berhasil dibuat! Selamat datang di KARA111, ${newUser.username}.`, 'success');
   };
 
@@ -171,6 +281,7 @@ export default function App() {
     setUser(null);
     setToken(null);
     localStorage.removeItem('kara111_token');
+    localStorage.removeItem('kara111_user');
     showToast('Anda telah keluar dari akun.', 'info');
   };
 
@@ -454,7 +565,7 @@ export default function App() {
           user={user}
           onClose={() => setIsDepositOpen(false)}
           onDepositSuccess={(newBal) => {
-            setUser({ ...user, balance: newBal });
+            handleBalanceUpdate(newBal);
             showToast('Deposit berhasil! Saldo akun bertambah.', 'success');
           }}
         />
@@ -467,7 +578,7 @@ export default function App() {
           user={user}
           onClose={() => setIsWithdrawOpen(false)}
           onWithdrawSuccess={(newBal) => {
-            setUser({ ...user, balance: newBal });
+            handleBalanceUpdate(newBal);
             showToast('Permintaan penarikan dana berhasil diproses.', 'success');
           }}
         />
@@ -491,9 +602,7 @@ export default function App() {
           setIsWheelOpen(false);
           setAuthModal({ isOpen: true, mode: 'register' });
         }}
-        onBalanceUpdate={(newBal) => {
-          if (user) setUser({ ...user, balance: newBal });
-        }}
+        onBalanceUpdate={handleBalanceUpdate}
       />
 
       {/* 6. Spaceman Crash Game Modal */}
@@ -509,9 +618,7 @@ export default function App() {
           setIsSpacemanOpen(false);
           setIsDepositOpen(true);
         }}
-        onBalanceUpdate={(newBal) => {
-          if (user) setUser({ ...user, balance: newBal });
-        }}
+        onBalanceUpdate={handleBalanceUpdate}
       />
 
       {/* 7. Mahjong Wins 3 Modal */}
@@ -528,9 +635,7 @@ export default function App() {
           setSelectedMahjongGame(null);
           setIsDepositOpen(true);
         }}
-        onBalanceUpdate={(newBal) => {
-          if (user) setUser({ ...user, balance: newBal });
-        }}
+        onBalanceUpdate={handleBalanceUpdate}
       />
 
       {/* 8. Slot Machine Modal */}
@@ -547,9 +652,7 @@ export default function App() {
           setSelectedSlotGame(null);
           setIsDepositOpen(true);
         }}
-        onBalanceUpdate={(newBal) => {
-          if (user) setUser({ ...user, balance: newBal });
-        }}
+        onBalanceUpdate={handleBalanceUpdate}
       />
 
       {/* 8. Toto Bet Modal */}
@@ -562,9 +665,7 @@ export default function App() {
           setSelectedTotoMarket(null);
           setAuthModal({ isOpen: true, mode: 'register' });
         }}
-        onBalanceUpdate={(newBal) => {
-          if (user) setUser({ ...user, balance: newBal });
-        }}
+        onBalanceUpdate={handleBalanceUpdate}
       />
 
       {/* 9. Live Chat Modal */}

@@ -160,6 +160,36 @@ async function startServer() {
     }
   });
 
+  // --- Balance Sync ---
+  app.post('/api/user/balance', (req, res) => {
+    try {
+      const { userId, balance, delta } = req.body;
+      if (!userId) {
+        return res.status(400).json({ error: 'userId wajib diisi' });
+      }
+
+      const user = db.findUserById(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'User tidak ditemukan' });
+      }
+
+      if (typeof balance === 'number') {
+        user.balance = Math.max(0, balance);
+        db.persist();
+      } else if (typeof delta === 'number') {
+        db.updateBalance(userId, delta);
+      }
+
+      return res.json({
+        success: true,
+        balance: user.balance
+      });
+    } catch (err: any) {
+      console.error('Update balance error:', err);
+      return res.status(500).json({ error: 'Gagal memperbarui saldo' });
+    }
+  });
+
   // --- Transactions ---
   app.post('/api/transactions/deposit', (req, res) => {
     try {

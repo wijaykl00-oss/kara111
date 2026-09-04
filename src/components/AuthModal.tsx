@@ -109,13 +109,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           favorites: ['spaceman', 'sweet-bonanza', 'mahjong-ways-2']
         };
         registeredToken = btoa(`${localId}:${Date.now()}`);
-
-        try {
-          const existing = JSON.parse(localStorage.getItem('kara111_local_users') || '[]');
-          existing.push({ ...registeredUser, password });
-          localStorage.setItem('kara111_local_users', JSON.stringify(existing));
-        } catch (e) {}
       }
+
+      // Always save to kara111_local_users for instant login & offline availability
+      try {
+        const existing: any[] = JSON.parse(localStorage.getItem('kara111_local_users') || '[]');
+        const idx = existing.findIndex(u => u.username?.toLowerCase() === registeredUser!.username.toLowerCase());
+        const userEntry = { ...registeredUser, password };
+        if (idx >= 0) {
+          existing[idx] = userEntry;
+        } else {
+          existing.push(userEntry);
+        }
+        localStorage.setItem('kara111_local_users', JSON.stringify(existing));
+      } catch (e) {}
 
       setSuccessMessage('Pendaftaran berhasil! Selamat datang di KARA111, bonus saldo telah ditambahkan.');
       setTimeout(() => {

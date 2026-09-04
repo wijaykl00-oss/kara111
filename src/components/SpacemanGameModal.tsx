@@ -147,8 +147,24 @@ export const SpacemanGameModal: React.FC<Props> = ({
 
     const tick = (now: number) => {
       const elapsed = (now - startRef.current) / 1000;
-      const currentMult = Number((Math.pow(1.0672, elapsed * 10)).toFixed(2));
-      const t = Math.min(1, elapsed / (crashRef.current * 1.2)); // path progress 0→1
+      
+      // Progressive acceleration curve:
+      // - At 1.00x - 1.50x: starts moderately slow for suspense (~2.5s buildup)
+      // - At 1.50x - 3.00x: picks up steady momentum
+      // - At 3.00x - 10.0x: accelerating fast
+      // - At 10x - 50x - 100x+: rocket supersonic climb!
+      const currentMult = Number((
+        1 +
+        0.06 * elapsed +
+        0.038 * Math.pow(elapsed, 2) +
+        0.0055 * Math.pow(elapsed, 3) +
+        0.00065 * Math.pow(elapsed, 4)
+      ).toFixed(2));
+
+      // Astronaut ascends smoothly along flight trajectory then hovers in high orbit
+      const flightProgress = Math.min(0.85, 1 - Math.exp(-elapsed / 2.8));
+      const zeroGHover = Math.sin(elapsed * 3.5) * 0.015;
+      const t = Math.min(0.92, flightProgress + zeroGHover);
 
       multRef.current = currentMult;
       setMult(currentMult);
@@ -365,8 +381,8 @@ export const SpacemanGameModal: React.FC<Props> = ({
                 style={{
                   left: `calc(${astroX}% - 36px)`,
                   top: `calc(${astroY}% - 36px)`,
-                  transition: isFlying ? 'left 0.1s linear, top 0.1s linear' : 'none',
-                  transform: `rotate(${isFlying ? -35 + astroT * 5 : 0}deg)`,
+                  transition: 'none',
+                  transform: `rotate(${isFlying ? -32 + Math.sin(astroT * 8) * 4 : 0}deg)`,
                 }}
               >
                 {/* Astronaut body */}
@@ -398,9 +414,9 @@ export const SpacemanGameModal: React.FC<Props> = ({
                   {isFlying && (
                     <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
                       <div className="rounded-full animate-pulse"
-                        style={{ width: 10, height: 20, background: 'linear-gradient(180deg,#fbbf24,#f97316,transparent)', opacity: 0.9 }} />
-                      <div className="rounded-full animate-pulse" style={{ animationDelay: '0.15s',
-                        width: 10, height: 20, background: 'linear-gradient(180deg,#fbbf24,#f97316,transparent)', opacity: 0.9 }} />
+                        style={{ width: 10, height: Math.min(36, 18 + mult * 0.4), background: 'linear-gradient(180deg,#fbbf24,#f97316,transparent)', opacity: 0.95 }} />
+                      <div className="rounded-full animate-pulse" style={{ animationDelay: '0.12s',
+                        width: 10, height: Math.min(36, 18 + mult * 0.4), background: 'linear-gradient(180deg,#fbbf24,#f97316,transparent)', opacity: 0.95 }} />
                     </div>
                   )}
                 </div>
