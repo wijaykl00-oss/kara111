@@ -38,6 +38,7 @@ import { WithdrawModal } from './components/WithdrawModal.tsx';
 import { TransactionHistoryModal } from './components/TransactionHistoryModal.tsx';
 import { LuckyWheelModal } from './components/LuckyWheelModal.tsx';
 import { SpacemanGameModal } from './components/SpacemanGameModal.tsx';
+import { MahjongWinsGameModal } from './components/MahjongWinsGameModal.tsx';
 import { SlotGameModal } from './components/SlotGameModal.tsx';
 import { TotoBetModal } from './components/TotoBetModal.tsx';
 import { LiveChatModal } from './components/LiveChatModal.tsx';
@@ -70,6 +71,7 @@ export default function App() {
   const [isWheelOpen, setIsWheelOpen] = useState(false);
   const [isSpacemanOpen, setIsSpacemanOpen] = useState(false);
   const [selectedSlotGame, setSelectedSlotGame] = useState<GameItem | null>(null);
+  const [selectedMahjongGame, setSelectedMahjongGame] = useState<GameItem | null>(null);
   const [selectedTotoMarket, setSelectedTotoMarket] = useState<TotoResultItem | null>(null);
   const [isLiveChatOpen, setIsLiveChatOpen] = useState(false);
   const [isPromoOpen, setIsPromoOpen] = useState(false);
@@ -207,6 +209,8 @@ export default function App() {
   const handlePlayGame = (game: GameItem) => {
     if (game.category === 'crash' || game.id.includes('spaceman')) {
       setIsSpacemanOpen(true);
+    } else if (game.id.includes('mahjong')) {
+      setSelectedMahjongGame(game);
     } else {
       setSelectedSlotGame(game);
     }
@@ -510,7 +514,26 @@ export default function App() {
         }}
       />
 
-      {/* 7. Slot Machine Modal */}
+      {/* 7. Mahjong Wins 3 Modal */}
+      <MahjongWinsGameModal
+        isOpen={!!selectedMahjongGame}
+        game={selectedMahjongGame}
+        user={user}
+        onClose={() => setSelectedMahjongGame(null)}
+        onOpenLogin={() => {
+          setSelectedMahjongGame(null);
+          setAuthModal({ isOpen: true, mode: 'register' });
+        }}
+        onOpenDeposit={() => {
+          setSelectedMahjongGame(null);
+          setIsDepositOpen(true);
+        }}
+        onBalanceUpdate={(newBal) => {
+          if (user) setUser({ ...user, balance: newBal });
+        }}
+      />
+
+      {/* 8. Slot Machine Modal */}
       <SlotGameModal
         isOpen={!!selectedSlotGame}
         game={selectedSlotGame}
