@@ -127,7 +127,7 @@ export const HOT_GAMES: GameItem[] = [
     title: 'EGGSPONENTIAL',
     provider: 'OCTOPLAY',
     category: 'slot',
-    image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=500&auto=format&fit=crop&q=80',
+    image: '/games/eggsponential.png',
     isHot: true,
     likes: 262,
     rtp: 97.4
@@ -161,7 +161,7 @@ export const FREE_INDICATOR_GAMES: GameItem[] = [
     title: 'SPACEMAN',
     provider: 'PRAGMATIC PLAY',
     category: 'crash',
-    image: '/games/spaceman.jpg',
+    image: '/games/spaceman.png',
     likes: 8468,
     rtp: 99.2
   },
@@ -170,7 +170,7 @@ export const FREE_INDICATOR_GAMES: GameItem[] = [
     title: 'MEGA WHEEL',
     provider: 'PRAGMATIC PLAY',
     category: 'casino',
-    image: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&auto=format&fit=crop&q=80',
+    image: '/games/mega_wheel.png',
     isLive: true,
     likes: 664,
     rtp: 97.1
@@ -180,7 +180,7 @@ export const FREE_INDICATOR_GAMES: GameItem[] = [
     title: 'BIG BASS CRASH™',
     provider: 'PRAGMATIC PLAY',
     category: 'crash',
-    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80',
+    image: '/games/big_bass_crash.png',
     likes: 654,
     rtp: 97.8
   },
@@ -189,7 +189,7 @@ export const FREE_INDICATOR_GAMES: GameItem[] = [
     title: 'TREASURE ISLAND',
     provider: 'PRAGMATIC PLAY',
     category: 'casino',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80',
+    image: '/games/treasure_island.png',
     isLive: true,
     likes: 82,
     rtp: 96.6
@@ -199,7 +199,7 @@ export const FREE_INDICATOR_GAMES: GameItem[] = [
     title: 'HIGH FLYER',
     provider: 'PRAGMATIC PLAY',
     category: 'crash',
-    image: 'https://images.unsplash.com/photo-1506015391300-4802dc74de2e?w=500&auto=format&fit=crop&q=80',
+    image: '/games/high_flyer.png',
     likes: 1460,
     rtp: 98.2
   }
@@ -212,7 +212,7 @@ export const MOST_LIKED_GAMES: GameItem[] = [
     title: 'SPACEMAN',
     provider: 'PRAGMATIC PLAY',
     category: 'crash',
-    image: '/games/spaceman.jpg',
+    image: '/games/spaceman.png',
     likes: 8468,
     rtp: 99.2
   },
@@ -239,7 +239,7 @@ export const MOST_LIKED_GAMES: GameItem[] = [
     title: 'HIGH FLYER',
     provider: 'PRAGMATIC PLAY',
     category: 'slot',
-    image: 'https://images.unsplash.com/photo-1506015391300-4802dc74de2e?w=500&auto=format&fit=crop&q=80',
+    image: '/games/high_flyer.png',
     likes: 1460,
     rtp: 96.9
   },
@@ -277,7 +277,7 @@ export const MOST_LIKED_GAMES: GameItem[] = [
     title: 'MEGA WHEEL',
     provider: 'PRAGMATIC PLAY',
     category: 'casino',
-    image: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&auto=format&fit=crop&q=80',
+    image: '/games/mega_wheel.png',
     isLive: true,
     likes: 664,
     rtp: 97.1
@@ -287,7 +287,7 @@ export const MOST_LIKED_GAMES: GameItem[] = [
     title: 'BIG BASS CRASH™',
     provider: 'PRAGMATIC PLAY',
     category: 'crash',
-    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80',
+    image: '/games/big_bass_crash.png',
     likes: 654,
     rtp: 97.8
   },
