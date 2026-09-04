@@ -1,70 +1,81 @@
 import React from 'react';
-import { CheckCircle2, XCircle, AlertTriangle, Building } from 'lucide-react';
+import { CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
 
-interface BankItem {
+interface BankBadge {
   name: string;
   isOnline: boolean;
-  type: 'bank' | 'ewallet';
+  color?: string;
 }
 
-const BANKS: BankItem[] = [
-  { name: 'BCA', isOnline: true, type: 'bank' },
-  { name: 'DANA', isOnline: true, type: 'ewallet' },
-  { name: 'BNI', isOnline: false, type: 'bank' },
-  { name: 'MANDIRI', isOnline: false, type: 'bank' },
-  { name: 'CIMB', isOnline: false, type: 'bank' },
-  { name: 'PERMATA', isOnline: false, type: 'bank' },
-  { name: 'BANK BRI', isOnline: false, type: 'bank' },
+const ROW_1: BankBadge[] = [
+  { name: 'BCA', isOnline: true, color: 'text-blue-700' },
+  { name: 'DANA', isOnline: true, color: 'text-sky-500' },
+  { name: 'BNI', isOnline: false, color: 'text-teal-700' },
+  { name: 'mandiri', isOnline: false, color: 'text-blue-900' },
+];
+
+const ROW_2: BankBadge[] = [
+  { name: 'BANK', isOnline: false, color: 'text-stone-900' },
+  { name: 'BCA', isOnline: false, color: 'text-blue-700' },
+  { name: 'BANK BRI', isOnline: false, color: 'text-blue-800' },
 ];
 
 export const BankInfo: React.FC = () => {
   return (
     <section className="w-full max-w-4xl mx-auto px-3 my-4 select-none">
-      <div className="bg-[#170f09] rounded-2xl border border-amber-950/70 p-4 shadow-lg">
+      <div className="bg-[#170f09] rounded-2xl border border-amber-950/70 p-4 shadow-lg space-y-3">
         {/* Header */}
-        <div className="flex items-center gap-2 mb-3">
-          <Building className="w-4 h-4 text-amber-400" />
-          <h3 className="text-base font-black tracking-wide text-amber-400">
-            Bank Info
-          </h3>
-        </div>
+        <h3 className="text-base font-black tracking-wide text-amber-400 font-['Chakra_Petch']">
+          Bank Info
+        </h3>
 
-        {/* Bank List Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
-          {BANKS.map((b, idx) => (
-            <div
-              key={idx}
-              className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-[#26190e] border border-amber-900/40 shadow-xs"
-            >
-              <div className="flex items-center gap-1.5">
-                {b.isOnline ? (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                ) : (
-                  <XCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
-                )}
-                <span className="text-xs font-black text-amber-100 tracking-wider">
+        {/* Row 1 */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          {ROW_1.map((b, idx) => (
+            <div key={idx} className="flex items-center gap-1.5">
+              {b.isOnline ? (
+                <div className="w-4 h-4 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0 shadow-xs">
+                  ✓
+                </div>
+              ) : (
+                <div className="w-4 h-4 rounded-full bg-red-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0 shadow-xs">
+                  ✕
+                </div>
+              )}
+              <div className="flex-1 bg-white py-1.5 px-3 rounded-md shadow-sm flex items-center justify-center">
+                <span className={`text-xs font-black tracking-wide ${b.color || 'text-stone-900'} uppercase font-sans`}>
                   {b.name}
                 </span>
               </div>
-              <span
-                className={`text-[9px] font-extrabold uppercase px-1 py-0.2 rounded ${
-                  b.isOnline
-                    ? 'text-emerald-400 bg-emerald-950/60'
-                    : 'text-rose-400 bg-rose-950/60'
-                }`}
-              >
-                {b.isOnline ? 'Online' : 'Gangguan'}
-              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Row 2 */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-w-lg mx-auto">
+          {ROW_2.map((b, idx) => (
+            <div key={idx} className="flex items-center gap-1.5">
+              {b.isOnline ? (
+                <div className="w-4 h-4 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0 shadow-xs">
+                  ✓
+                </div>
+              ) : (
+                <div className="w-4 h-4 rounded-full bg-red-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0 shadow-xs">
+                  ✕
+                </div>
+              )}
+              <div className="flex-1 bg-white py-1.5 px-3 rounded-md shadow-sm flex items-center justify-center">
+                <span className={`text-xs font-black tracking-wide ${b.color || 'text-stone-900'} uppercase font-sans`}>
+                  {b.name}
+                </span>
+              </div>
             </div>
           ))}
         </div>
 
         {/* Status Notice Box */}
-        <div className="mt-3 p-2.5 rounded-xl bg-[#2e1d0f]/80 border border-amber-800/40 flex items-center gap-2 text-amber-200/90 text-xs">
-          <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-          <span className="font-semibold text-[11px] sm:text-xs">
-            BNI, MANDIRI, DBS, BCA, BRI, Sedang Dalam Gangguan, Mohon Hubungi Customer Service via Live Chat
-          </span>
+        <div className="mt-2 p-2.5 rounded-xl bg-[#2a1b10] border border-amber-900/40 text-center text-amber-200/90 text-xs font-medium">
+          BNI, MANDIRI, DBS, BCA, BRI, Sedang Dalam Gangguan, Mohon Hubungi Customer Service
         </div>
       </div>
     </section>

@@ -18,6 +18,7 @@ export interface GameItem {
   category: 'slot' | 'casino' | 'arcade' | 'crash' | 'togel' | 'sports';
   image: string;
   isHot?: boolean;
+  isLive?: boolean;
   likes: number;
   rtp?: number;
 }

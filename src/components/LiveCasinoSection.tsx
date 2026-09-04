@@ -1,13 +1,15 @@
 import React, { useRef } from 'react';
-import { Layers, ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { CASINO_PROVIDERS, CasinoProviderItem } from '../data/games.ts';
 
 interface LiveCasinoSectionProps {
   onSelectCasino: (provider: CasinoProviderItem) => void;
+  showDivider?: boolean;
 }
 
 export const LiveCasinoSection: React.FC<LiveCasinoSectionProps> = ({
-  onSelectCasino
+  onSelectCasino,
+  showDivider = true
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -24,47 +26,44 @@ export const LiveCasinoSection: React.FC<LiveCasinoSectionProps> = ({
   return (
     <section className="w-full max-w-4xl mx-auto px-3 my-4 select-none">
       {/* Header */}
-      <div className="flex items-center justify-between mb-2.5">
+      <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Layers className="w-5 h-5 text-amber-400" />
-          <h2 className="text-base sm:text-lg font-black tracking-wide text-amber-50">
+          {/* Card Icon */}
+          <span className="text-xl">🎴</span>
+          <h2 className="text-lg sm:text-xl font-black tracking-wide text-white font-['Chakra_Petch']">
             Live Casino
           </h2>
         </div>
 
         {/* Navigation Arrows */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <button
             onClick={() => handleScroll('left')}
             aria-label="Scroll Kiri"
-            className="w-7 h-7 rounded-md bg-[#2b1e14] hover:bg-amber-500 hover:text-stone-950 text-amber-400 border border-amber-900/40 flex items-center justify-center transition-colors shadow-sm active:scale-95 cursor-pointer"
+            className="w-8 h-8 rounded-lg bg-[#f3ad12] hover:bg-yellow-400 text-stone-950 flex items-center justify-center transition-all shadow-md active:scale-95 cursor-pointer font-black"
           >
-            <ChevronLeft className="w-4 h-4 font-bold" />
+            <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
           </button>
           <button
             onClick={() => handleScroll('right')}
             aria-label="Scroll Kanan"
-            className="w-7 h-7 rounded-md bg-[#2b1e14] hover:bg-amber-500 hover:text-stone-950 text-amber-400 border border-amber-900/40 flex items-center justify-center transition-colors shadow-sm active:scale-95 cursor-pointer"
+            className="w-8 h-8 rounded-lg bg-[#f3ad12] hover:bg-yellow-400 text-stone-950 flex items-center justify-center transition-all shadow-md active:scale-95 cursor-pointer font-black"
           >
-            <ChevronRight className="w-4 h-4 font-bold" />
+            <ChevronRight className="w-5 h-5 stroke-[2.5]" />
           </button>
         </div>
       </div>
 
-      {/* Grid of 8 Casino Dealers (2 rows of 4 or 4 columns scrollable) */}
-      <div
-        ref={containerRef}
-        className="grid grid-cols-4 gap-2.5 sm:gap-3 overflow-x-auto no-scrollbar scroll-smooth pb-1"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
+      {/* 8 Casino Dealer Cards in 4x2 Grid */}
+      <div className="grid grid-cols-4 gap-2.5 sm:gap-3">
         {CASINO_PROVIDERS.map((item) => (
           <div
             key={item.id}
             onClick={() => onSelectCasino(item)}
-            className="group relative flex flex-col rounded-xl overflow-hidden border border-amber-950/80 bg-[#1f150d] shadow-md hover:border-amber-400 hover:shadow-amber-500/20 transition-all duration-200 cursor-pointer min-w-[125px] sm:min-w-0 active:scale-[0.98]"
+            className="group relative flex flex-col rounded-2xl overflow-hidden border border-amber-900/60 bg-[#281c12] shadow-lg hover:border-amber-400 hover:shadow-amber-500/30 transition-all duration-200 cursor-pointer active:scale-[0.98]"
           >
-            {/* Dealer Image Container */}
-            <div className="relative aspect-[3/4] w-full overflow-hidden bg-stone-900">
+            {/* Dealer Image Area */}
+            <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#24170d]">
               <img
                 src={item.dealerImg}
                 alt={item.name}
@@ -73,26 +72,30 @@ export const LiveCasinoSection: React.FC<LiveCasinoSectionProps> = ({
                 loading="lazy"
               />
 
-              {/* Top Logo / Brand Overlay */}
-              <div className="absolute inset-x-0 top-0 p-2 bg-gradient-to-b from-black/80 via-black/40 to-transparent flex flex-col items-center">
-                <span className="text-[10px] sm:text-xs font-black tracking-wider text-amber-200 uppercase drop-shadow text-center">
+              {/* Top Logo / Brand Title */}
+              <div className="absolute inset-x-0 top-0 pt-2 pb-4 bg-gradient-to-b from-black/85 via-black/40 to-transparent flex flex-col items-center justify-center px-1">
+                <span className="text-[10px] sm:text-xs font-black tracking-wide text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] text-center font-['Chakra_Petch'] leading-tight">
                   {item.name}
-                </span>
-                <span className="text-[8px] font-bold text-amber-400/80 uppercase">
-                  Live Table
                 </span>
               </div>
 
-              {/* Bottom Play Overlay */}
+              {/* Hover Play Button */}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <div className="w-10 h-10 rounded-full bg-amber-400 text-stone-950 flex items-center justify-center shadow-lg transform scale-75 group-hover:scale-100 transition-transform">
-                  <Play className="w-5 h-5 fill-stone-950 ml-0.5" />
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-300 text-stone-950 flex items-center justify-center shadow-lg transform scale-75 group-hover:scale-100 transition-transform">
+                  <Play className="w-4 h-4 fill-stone-950 ml-0.5" />
                 </div>
               </div>
+
+              {/* Bottom Yellow Accent Bar from Screenshot */}
+              <div className="absolute inset-x-0 bottom-0 h-1.5 bg-[#f3ad12]" />
             </div>
           </div>
         ))}
       </div>
+
+      {showDivider && (
+        <div className="mt-5 border-b border-stone-800/80" />
+      )}
     </section>
   );
 };

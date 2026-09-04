@@ -1,14 +1,15 @@
 import { GameItem } from '../types.ts';
 
+// 1. Hot Games (Full list from screenshots)
 export const HOT_GAMES: GameItem[] = [
   {
     id: 'ayam-nekat',
     title: 'AYAM NEKAT',
     provider: 'NANO ARCADE',
     category: 'arcade',
-    image: 'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=500&auto=format&fit=crop&q=80',
+    image: '/games/ayam_nekat.jpg',
     isHot: true,
-    likes: 887,
+    likes: 886,
     rtp: 98.4
   },
   {
@@ -16,7 +17,7 @@ export const HOT_GAMES: GameItem[] = [
     title: 'SWEET BONANZA...',
     provider: 'PRAGMATIC PLAY',
     category: 'slot',
-    image: 'https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=500&auto=format&fit=crop&q=80',
+    image: '/games/sweet_bonanza.jpg',
     isHot: true,
     likes: 416,
     rtp: 98.8
@@ -26,7 +27,7 @@ export const HOT_GAMES: GameItem[] = [
     title: 'MAHJONG WINS 3 -...',
     provider: 'PRAGMATIC PLAY',
     category: 'slot',
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80',
+    image: '/games/mahjong_wins_3.jpg',
     isHot: true,
     likes: 989,
     rtp: 97.9
@@ -36,20 +37,122 @@ export const HOT_GAMES: GameItem[] = [
     title: 'FORTUNE OF...',
     provider: 'PRAGMATIC PLAY',
     category: 'slot',
+    image: '/games/fortune_olympus.jpg',
+    isHot: true,
+    likes: 122,
+    rtp: 98.5
+  },
+  {
+    id: 'gates-of-olympus',
+    title: 'GATES OF OLYMPUS',
+    provider: 'PRAGMATIC PLAY',
+    category: 'slot',
+    image: '/games/fortune_olympus.jpg',
+    isHot: true,
+    likes: 528,
+    rtp: 98.9
+  },
+  {
+    id: 'gates-of-gatotkaca-1000',
+    title: 'GATES OF GATOT...',
+    provider: 'PRAGMATIC PLAY',
+    category: 'slot',
     image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=500&auto=format&fit=crop&q=80',
     isHot: true,
-    likes: 123,
-    rtp: 98.5
+    likes: 357,
+    rtp: 98.1
+  },
+  {
+    id: 'aztec-ancients',
+    title: 'AZTEC ANCIENTS',
+    provider: 'OCTOPLAY',
+    category: 'slot',
+    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
+    isHot: true,
+    likes: 66,
+    rtp: 96.7
+  },
+  {
+    id: '2d-wheel',
+    title: '2D WHEEL',
+    provider: 'NANO CASINO',
+    category: 'arcade',
+    image: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&auto=format&fit=crop&q=80',
+    isHot: true,
+    likes: 90,
+    rtp: 97.2
+  },
+  {
+    id: 'sweet-bonanza-1000',
+    title: 'SWEET BONANZA...',
+    provider: 'PRAGMATIC PLAY',
+    category: 'slot',
+    image: '/games/sweet_bonanza.jpg',
+    isHot: true,
+    likes: 410,
+    rtp: 98.7
+  },
+  {
+    id: 'gates-of-olympus-1000',
+    title: 'GATES OF OLYMPUS...',
+    provider: 'PRAGMATIC PLAY',
+    category: 'slot',
+    image: '/games/fortune_olympus.jpg',
+    isHot: true,
+    likes: 292,
+    rtp: 99.0
+  },
+  {
+    id: '24d-super',
+    title: '24D SUPER',
+    provider: 'NANO CASINO',
+    category: 'arcade',
+    image: 'https://images.unsplash.com/photo-1511193311914-0346f16efe90?w=500&auto=format&fit=crop&q=80',
+    isHot: true,
+    likes: 28,
+    rtp: 96.8
+  },
+  {
+    id: 'gates-of-olympus-scatter',
+    title: 'GATES OF OLYMPUS...',
+    provider: 'PRAGMATIC PLAY',
+    category: 'slot',
+    image: '/games/fortune_olympus.jpg',
+    isHot: true,
+    likes: 191,
+    rtp: 98.6
+  },
+  {
+    id: 'eggsponential',
+    title: 'EGGSPONENTIAL',
+    provider: 'OCTOPLAY',
+    category: 'slot',
+    image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=500&auto=format&fit=crop&q=80',
+    isHot: true,
+    likes: 262,
+    rtp: 97.4
+  },
+  {
+    id: 'starlight-princess-1000',
+    title: 'STARLIGHT PRINCES...',
+    provider: 'PRAGMATIC PLAY',
+    category: 'slot',
+    image: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80',
+    isHot: true,
+    likes: 147,
+    rtp: 98.9
   }
 ];
 
+// 2. Indikator Gratis Games (Full list from screenshots)
 export const FREE_INDICATOR_GAMES: GameItem[] = [
   {
     id: 'candyland',
     title: 'SWEET BONANZA...',
     provider: 'PRAGMATIC PLAY',
     category: 'casino',
-    image: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=500&auto=format&fit=crop&q=80',
+    image: '/games/candyland.jpg',
+    isLive: true,
     likes: 491,
     rtp: 96.5
   },
@@ -58,8 +161,8 @@ export const FREE_INDICATOR_GAMES: GameItem[] = [
     title: 'SPACEMAN',
     provider: 'PRAGMATIC PLAY',
     category: 'crash',
-    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=80',
-    likes: 8473,
+    image: '/games/spaceman.jpg',
+    likes: 8468,
     rtp: 99.2
   },
   {
@@ -68,28 +171,49 @@ export const FREE_INDICATOR_GAMES: GameItem[] = [
     provider: 'PRAGMATIC PLAY',
     category: 'casino',
     image: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&auto=format&fit=crop&q=80',
+    isLive: true,
     likes: 664,
     rtp: 97.1
   },
   {
     id: 'big-bass-crash',
-    title: 'BIG BASS CRASH',
+    title: 'BIG BASS CRASH™',
     provider: 'PRAGMATIC PLAY',
     category: 'crash',
     image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80',
     likes: 654,
     rtp: 97.8
+  },
+  {
+    id: 'treasure-island',
+    title: 'TREASURE ISLAND',
+    provider: 'PRAGMATIC PLAY',
+    category: 'casino',
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80',
+    isLive: true,
+    likes: 82,
+    rtp: 96.6
+  },
+  {
+    id: 'high-flyer',
+    title: 'HIGH FLYER',
+    provider: 'PRAGMATIC PLAY',
+    category: 'crash',
+    image: 'https://images.unsplash.com/photo-1506015391300-4802dc74de2e?w=500&auto=format&fit=crop&q=80',
+    likes: 1460,
+    rtp: 98.2
   }
 ];
 
+// 3. Paling Disukai (Full list from screenshots)
 export const MOST_LIKED_GAMES: GameItem[] = [
   {
     id: 'spaceman-fav',
     title: 'SPACEMAN',
     provider: 'PRAGMATIC PLAY',
     category: 'crash',
-    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=80',
-    likes: 8473,
+    image: '/games/spaceman.jpg',
+    likes: 8468,
     rtp: 99.2
   },
   {
@@ -97,8 +221,8 @@ export const MOST_LIKED_GAMES: GameItem[] = [
     title: 'MAHJONG WAYS 2',
     provider: 'PGSOFT',
     category: 'slot',
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80',
-    likes: 3434,
+    image: '/games/mahjong_wins_3.jpg',
+    likes: 3433,
     rtp: 98.7
   },
   {
@@ -106,25 +230,134 @@ export const MOST_LIKED_GAMES: GameItem[] = [
     title: 'MAHJONG WAYS',
     provider: 'PGSOFT',
     category: 'slot',
-    image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=500&auto=format&fit=crop&q=80',
+    image: '/games/mahjong_wins_3.jpg',
     likes: 3164,
     rtp: 97.5
   },
   {
-    id: 'high-flyer',
+    id: 'high-flyer-fav',
     title: 'HIGH FLYER',
     provider: 'PRAGMATIC PLAY',
     category: 'slot',
     image: 'https://images.unsplash.com/photo-1506015391300-4802dc74de2e?w=500&auto=format&fit=crop&q=80',
     likes: 1460,
     rtp: 96.9
+  },
+  {
+    id: 'mahjong-wins-3-fav',
+    title: 'MAHJONG WINS 3 -...',
+    provider: 'PRAGMATIC PLAY',
+    category: 'slot',
+    image: '/games/mahjong_wins_3.jpg',
+    isHot: true,
+    likes: 989,
+    rtp: 97.9
+  },
+  {
+    id: 'ayam-nekat-fav',
+    title: 'AYAM NEKAT',
+    provider: 'NANO ARCADE',
+    category: 'arcade',
+    image: '/games/ayam_nekat.jpg',
+    isHot: true,
+    likes: 886,
+    rtp: 98.4
+  },
+  {
+    id: 'wild-bounty',
+    title: 'WILD BOUNTY...',
+    provider: 'PGSOFT',
+    category: 'slot',
+    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
+    likes: 831,
+    rtp: 97.8
+  },
+  {
+    id: 'mega-wheel-fav',
+    title: 'MEGA WHEEL',
+    provider: 'PRAGMATIC PLAY',
+    category: 'casino',
+    image: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&auto=format&fit=crop&q=80',
+    isLive: true,
+    likes: 664,
+    rtp: 97.1
+  },
+  {
+    id: 'big-bass-crash-fav',
+    title: 'BIG BASS CRASH™',
+    provider: 'PRAGMATIC PLAY',
+    category: 'crash',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80',
+    likes: 654,
+    rtp: 97.8
+  },
+  {
+    id: 'gates-of-olympus-fav',
+    title: 'GATES OF OLYMPUS',
+    provider: 'PRAGMATIC PLAY',
+    category: 'slot',
+    image: '/games/fortune_olympus.jpg',
+    isHot: true,
+    likes: 528,
+    rtp: 98.9
+  },
+  {
+    id: 'candyland-fav',
+    title: 'SWEET BONANZA...',
+    provider: 'PRAGMATIC PLAY',
+    category: 'casino',
+    image: '/games/candyland.jpg',
+    isLive: true,
+    likes: 491,
+    rtp: 96.5
+  },
+  {
+    id: 'sweet-bonanza-scatter-fav',
+    title: 'SWEET BONANZA...',
+    provider: 'PRAGMATIC PLAY',
+    category: 'slot',
+    image: '/games/sweet_bonanza.jpg',
+    isHot: true,
+    likes: 416,
+    rtp: 98.8
+  },
+  {
+    id: 'wild-bandito',
+    title: 'WILD BANDITO',
+    provider: 'PGSOFT',
+    category: 'slot',
+    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
+    likes: 413,
+    rtp: 98.2
+  },
+  {
+    id: 'gates-of-gatotkaca-fav',
+    title: 'GATES OF GATOT...',
+    provider: 'PRAGMATIC PLAY',
+    category: 'slot',
+    image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=500&auto=format&fit=crop&q=80',
+    isHot: true,
+    likes: 357,
+    rtp: 98.1
+  },
+  {
+    id: 'gates-of-olympus-1000-fav',
+    title: 'GATES OF OLYMPUS...',
+    provider: 'PRAGMATIC PLAY',
+    category: 'slot',
+    image: '/games/fortune_olympus.jpg',
+    isHot: true,
+    likes: 292,
+    rtp: 99.0
   }
 ];
 
+// Live Casino Providers (8 Cards from screenshot)
 export interface CasinoProviderItem {
   id: string;
   name: string;
   logo: string;
+  badge?: string;
   dealerImg: string;
 }
 
@@ -132,7 +365,8 @@ export const CASINO_PROVIDERS: CasinoProviderItem[] = [
   {
     id: 'pragmatic',
     name: 'PRAGMATIC PLAY',
-    logo: 'Pragmatic Play',
+    logo: 'PRAGMATIC PLAY',
+    badge: '👑',
     dealerImg: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80'
   },
   {
@@ -180,10 +414,10 @@ export const CASINO_PROVIDERS: CasinoProviderItem[] = [
 ];
 
 export const PARTNERS_LIST = [
-  'NANO LOTTERY', 'PRAGMATIC PLAY', 'JOKER GAMING', 'HABANERO', 'EVOLUTION GAMING', 'MICROGAMING',
-  'RELAX GAMING', "PLAY'N GO", 'SPADEGAMING', 'PG SOFT', 'SBOBET', 'DREAM GAMING',
-  'SA GAMING', 'SABA SPORTS', 'SEXY GAMING', 'WM CASINO', 'SV388', 'LG POKER',
+  'nano lottery', 'PRAGMATIC PLAY', 'JOKER GAMING', 'HABANERO', 'Evolution Gaming', 'Microgaming',
+  'RELAX GAMING', "PLAY'N GO", 'Spadegaming', 'PG POCKET GAMES SOFT', 'SBOBET', 'DREAMGAMING',
+  'SA GAMING', 'SABA SPORTS', 'Sexy GAMING', 'WM CASINO', 'SV388', 'LG POKER',
   'ALLBET', 'UNITED GAMING', 'M8 BET', 'CMD368', 'PLAYSTAR', 'YGGDRAZIL',
   'ION SLOT', 'NEXTSPIN', 'NOLIMIT CITY', 'RED TIGER', 'NETENT', 'BIG TIME GAMING',
-  'BTI', 'DRAGON GAMING', 'OCTOPLAY', 'YB LIVE', 'POP GAMING', 'NANO ARCADE'
+  'BTI', 'DRAGON GAMING', 'OCTOPLAY', 'YB LIVE', 'POP GAMING', 'nano CASINO', 'nano ARCADE'
 ];

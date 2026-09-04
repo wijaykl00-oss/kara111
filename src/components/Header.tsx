@@ -72,33 +72,43 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="w-full max-w-4xl mx-auto px-3 pt-3 pb-2 select-none">
-      {/* Top Logo: Golden Crown, Chinese Coin Talisman, and KARA111 */}
+      {/* Top Logo: CALO33 with Royal Blue Crowned Mahjong Tile & Gold Coins from Screenshot 4 */}
       <div className="flex justify-center items-center py-2 relative">
         <a href="/" className="group flex flex-col items-center cursor-pointer transition-transform duration-200 active:scale-95">
-          <div className="flex items-center gap-2">
-            {/* Talisman & Gold Coins Icon Badge */}
+          <div className="flex items-center gap-2.5">
+            {/* Crowned Blue Mahjong Tile & Gold Coins Badge */}
             <div className="relative flex items-center justify-center">
-              <div className="w-11 h-14 bg-gradient-to-b from-amber-300 via-amber-500 to-yellow-600 rounded-sm shadow-lg border border-amber-200 flex flex-col items-center justify-between p-1">
-                <Crown className="w-5 h-5 text-red-700 drop-shadow animate-pulse" />
-                <span className="text-[9px] font-black tracking-widest text-red-900 writing-vertical uppercase">發財</span>
-                <div className="flex -space-x-1">
-                  <div className="w-3.5 h-3.5 rounded-full bg-yellow-300 border border-amber-600 shadow-sm flex items-center justify-center text-[7px] font-bold text-amber-900">¥</div>
-                  <div className="w-3.5 h-3.5 rounded-full bg-yellow-400 border border-amber-600 shadow-sm flex items-center justify-center text-[7px] font-bold text-amber-900">¥</div>
+              {/* Golden Crown on top of the tile */}
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+                <Crown className="w-5 h-5 text-amber-400 fill-amber-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+              </div>
+
+              {/* Blue 3D Mahjong Tile */}
+              <div className="w-9 h-11 bg-gradient-to-b from-blue-700 via-blue-800 to-blue-950 rounded-md shadow-xl border-2 border-amber-400/80 flex flex-col items-center justify-center relative overflow-hidden">
+                <span className="text-sm font-black text-amber-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] select-none">
+                  發
+                </span>
+              </div>
+
+              {/* Gold Coins overlapping at bottom right */}
+              <div className="absolute -bottom-1 -right-2 flex -space-x-1 z-20">
+                <div className="w-4 h-4 rounded-full bg-gradient-to-tr from-yellow-500 to-amber-300 border border-amber-600 shadow-md flex items-center justify-center text-[7px] font-black text-amber-950">
+                  ¥
+                </div>
+                <div className="w-4 h-4 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-200 border border-amber-600 shadow-md flex items-center justify-center text-[7px] font-black text-amber-950">
+                  ¥
                 </div>
               </div>
             </div>
 
-            {/* Brand Text: KARA111 */}
+            {/* Brand Text: CALO 33 */}
             <div className="flex flex-col items-start leading-none">
-              <div className="flex items-baseline">
-                <span className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-b from-amber-100 via-yellow-400 to-amber-600 bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(245,158,11,0.5)] font-['Chakra_Petch']">
-                  KARA<span className="text-amber-400 text-3xl md:text-4xl font-extrabold tracking-normal">111</span>
+              <div className="flex items-baseline tracking-tight">
+                <span className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-blue-400 via-blue-600 to-blue-800 drop-shadow-[0_2px_8px_rgba(37,99,235,0.7)] font-['Chakra_Petch'] uppercase" style={{ WebkitTextStroke: '1px #f59e0b' }}>
+                  CALO
                 </span>
-              </div>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="h-[2px] w-6 bg-gradient-to-r from-amber-400 to-transparent"></span>
-                <span className="text-[10px] font-bold tracking-[0.25em] text-amber-400/90 uppercase">
-                  Official Gaming Portal
+                <span className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-yellow-200 via-amber-400 to-amber-600 drop-shadow-[0_2px_8px_rgba(245,158,11,0.8)] font-['Chakra_Petch'] ml-1" style={{ WebkitTextStroke: '1px #78350f' }}>
+                  33
                 </span>
               </div>
             </div>
