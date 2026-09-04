@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { X, Send, ChevronLeft, ChevronRight, RefreshCw, BarChart2 } from 'lucide-react';
+import { X, Send, ChevronLeft, ChevronRight, RefreshCw, BarChart2, RotateCcw } from 'lucide-react';
 import { UserProfile } from '../types.ts';
 
 interface Props {
@@ -351,124 +351,169 @@ export const SpacemanGameModal: React.FC<Props> = ({
           <div className="relative flex-1 overflow-hidden">
             {/* Space glow */}
             <div className="absolute inset-0 pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse at 50% 60%, rgba(139,92,246,0.15) 0%, transparent 70%)' }} />
+              style={{ background: 'radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.2) 0%, transparent 75%)' }} />
 
-            {/* Big planet */}
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 pointer-events-none"
-              style={{ width: 140, height: 140, borderRadius: '50%',
-                background: 'radial-gradient(circle at 35% 35%, #60a5fa, #1e3a8a 50%, #0f172a)',
-                boxShadow: '0 0 40px rgba(59,130,246,0.3)',
-                top: isFlying ? '5%' : '8%', transition: 'top 0.5s ease'
-              }} />
+            {/* ── CENTRAL 3D CRATERED MOON & ROTATING SUNBURST RAYS (persis referensi foto) ── */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
+              style={{ transform: 'translateY(-4%)' }}>
 
-            {/* Dashed trail */}
-            {(isFlying || isCrashed) && astroT > 0 && (
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }}>
-                <polyline
-                  points={trailPoints}
-                  fill="none"
-                  stroke="rgba(251,191,36,0.6)"
-                  strokeWidth="2"
-                  strokeDasharray="6,4"
-                />
-              </svg>
-            )}
-
-            {/* Astronaut */}
-            {!isCrashed && (
+              {/* Rotating Purple Sunburst Rays behind the Moon */}
               <div
-                className="absolute z-10"
+                className="absolute w-[320px] h-[320px] sm:w-[440px] sm:h-[440px] rounded-full opacity-60 pointer-events-none"
                 style={{
-                  left: `calc(${astroX}% - 36px)`,
-                  top: `calc(${astroY}% - 36px)`,
-                  transition: 'none',
-                  transform: `rotate(${isFlying ? -32 + Math.sin(astroT * 8) * 4 : 0}deg)`,
+                  background: 'repeating-conic-gradient(from 0deg, #4c1d95 0deg 15deg, #1e003a 15deg 30deg)',
+                  animation: 'spin 35s linear infinite',
+                  filter: 'blur(1px)',
                 }}
-              >
-                {/* Astronaut body */}
-                <div className="relative" style={{ width: 72, height: 72 }}>
-                  <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" width={72} height={72}>
-                    {/* Cape */}
-                    <ellipse cx="36" cy="58" rx="20" ry="10" fill="#c2410c" opacity="0.9"/>
-                    {/* Suit body */}
-                    <rect x="20" y="32" width="32" height="28" rx="10" fill="#e2e8f0"/>
-                    {/* Helmet */}
-                    <circle cx="36" cy="26" r="18" fill="#c7d2fe" stroke="#818cf8" strokeWidth="2"/>
-                    {/* Visor */}
-                    <ellipse cx="36" cy="26" rx="12" ry="11" fill="#3730a3" opacity="0.85"/>
-                    {/* Visor glare */}
-                    <ellipse cx="30" cy="22" rx="3" ry="2" fill="white" opacity="0.5"/>
-                    {/* Eyes glow */}
-                    <circle cx="31" cy="26" r="2" fill="#60a5fa"/>
-                    <circle cx="41" cy="26" r="2" fill="#60a5fa"/>
-                    {/* Jetpack */}
-                    <rect x="14" y="36" width="8" height="16" rx="4" fill="#64748b"/>
-                    <rect x="50" y="36" width="8" height="16" rx="4" fill="#64748b"/>
-                    {/* Arm */}
-                    <rect x="9" y="38" width="14" height="8" rx="4" fill="#e2e8f0"/>
-                    <rect x="49" y="38" width="14" height="8" rx="4" fill="#e2e8f0"/>
-                    {/* Stars on suit */}
-                    <polygon points="36,35 37.2,38.6 41,38.6 38,40.7 39.2,44.4 36,42.3 32.8,44.4 34,40.7 31,38.6 34.8,38.6" fill="#fbbf24"/>
-                  </svg>
-                  {/* Jetpack flames */}
+              />
+
+              {/* Blue 3D Cratered Moon Container */}
+              <div className="relative flex items-center justify-center">
+                <img
+                  src="/games/spaceman_moon.png"
+                  alt="Spaceman Blue Moon"
+                  className="w-52 h-52 sm:w-68 sm:h-68 object-contain drop-shadow-[0_0_45px_rgba(37,99,235,0.7)] select-none"
+                />
+
+                {/* Multiplier / Status in front of the Moon (exact gold font styling with navy drop shadow) */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none z-20">
+                  {isWaiting && (
+                    <div className="text-center px-4">
+                      <div className="text-white font-black text-xs sm:text-sm tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] animate-pulse uppercase">
+                        TUNGGU PERMAINAN BERIKUTNYA
+                      </div>
+                      <div className="text-yellow-400 font-black text-2xl sm:text-4xl mt-1 drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] font-mono">
+                        {waiting}s
+                      </div>
+                    </div>
+                  )}
+
                   {isFlying && (
-                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                      <div className="rounded-full animate-pulse"
-                        style={{ width: 10, height: Math.min(36, 18 + mult * 0.4), background: 'linear-gradient(180deg,#fbbf24,#f97316,transparent)', opacity: 0.95 }} />
-                      <div className="rounded-full animate-pulse" style={{ animationDelay: '0.12s',
-                        width: 10, height: Math.min(36, 18 + mult * 0.4), background: 'linear-gradient(180deg,#fbbf24,#f97316,transparent)', opacity: 0.95 }} />
+                    <div className="flex items-baseline justify-center tracking-tight">
+                      <span
+                        className="font-black text-5xl sm:text-7xl tracking-tighter select-none"
+                        style={{
+                          color: '#ffc107',
+                          textShadow: '0 4px 0 #0f172a, 0 6px 14px rgba(0,0,0,0.95), 0 0 25px rgba(251,191,36,0.65)',
+                          WebkitTextStroke: '2px #78350f',
+                          fontFamily: "'Chakra Petch', 'Impact', sans-serif",
+                        }}
+                      >
+                        {multDisplay}x
+                      </span>
+                    </div>
+                  )}
+
+                  {isCrashed && (
+                    <div className="text-center px-2">
+                      <div
+                        className="font-black text-3xl sm:text-5xl tracking-widest animate-pulse uppercase"
+                        style={{
+                          color: '#ef4444',
+                          textShadow: '0 4px 0 #450a0a, 0 6px 16px rgba(0,0,0,0.95), 0 0 30px rgba(239,68,68,0.85)',
+                          fontFamily: "'Chakra Petch', sans-serif",
+                        }}
+                      >
+                        CRASHED!
+                      </div>
+                      <div
+                        className="font-black text-xl sm:text-3xl mt-0.5"
+                        style={{
+                          color: '#fca5a5',
+                          textShadow: '0 2px 0 #450a0a, 0 4px 8px rgba(0,0,0,0.9)',
+                          fontFamily: "'Chakra Petch', sans-serif",
+                        }}
+                      >
+                        @ {crashAt.toFixed(2)}x
+                      </div>
                     </div>
                   )}
                 </div>
               </div>
+            </div>
+
+            {/* Dashed trail */}
+            {(isFlying || isCrashed) && astroT > 0 && (
+              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 15 }}>
+                <polyline
+                  points={trailPoints}
+                  fill="none"
+                  stroke="rgba(251,191,36,0.7)"
+                  strokeWidth="3"
+                  strokeDasharray="8,5"
+                />
+              </svg>
             )}
 
-            {/* CRASHED astronaut – tumbling */}
-            {isCrashed && (
-              <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                <div style={{ animation: 'spin 1s linear infinite', opacity: 0.6, width: 60, height: 60 }}>
-                  <svg viewBox="0 0 72 72" width={60} height={60}>
-                    <ellipse cx="36" cy="58" rx="20" ry="10" fill="#c2410c" opacity="0.7"/>
-                    <rect x="20" y="32" width="32" height="28" rx="10" fill="#e2e8f0"/>
-                    <circle cx="36" cy="26" r="18" fill="#c7d2fe" stroke="#818cf8" strokeWidth="2"/>
-                    <ellipse cx="36" cy="26" rx="12" ry="11" fill="#3730a3" opacity="0.85"/>
-                  </svg>
+            {/* ── ASTRONAUT CHARACTER (persis referensi Spaceman maskot) ── */}
+            {/* 1. WAITING: Spaceman standing with peace sign ✌️ */}
+            {isWaiting && (
+              <div
+                className="absolute z-20 pointer-events-none flex flex-col items-center"
+                style={{
+                  left: '50%',
+                  bottom: '10%',
+                  transform: 'translateX(-50%)',
+                }}
+              >
+                <img
+                  src="/games/spaceman_standing.png"
+                  alt="Spaceman Mascot"
+                  className="w-24 h-24 sm:w-32 sm:h-32 object-contain drop-shadow-[0_10px_25px_rgba(139,92,246,0.7)] animate-bounce"
+                  style={{ animationDuration: '3.5s' }}
+                />
+                <div className="w-16 sm:w-24 h-3 rounded-full bg-cyan-400/40 blur-sm -mt-2" />
+              </div>
+            )}
+
+            {/* 2. FLYING: Spaceman flying smoothly along trajectory with jetpack blast */}
+            {isFlying && (
+              <div
+                className="absolute z-20 pointer-events-none"
+                style={{
+                  left: `calc(${astroX}% - 44px)`,
+                  top: `calc(${astroY}% - 44px)`,
+                  transition: 'none',
+                  transform: `rotate(${-28 + Math.sin(astroT * 8) * 4}deg)`,
+                }}
+              >
+                <div className="relative w-24 h-24 sm:w-28 sm:h-28">
+                  <img
+                    src="/games/spaceman_flying.png"
+                    alt="Flying Spaceman"
+                    className="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(251,191,36,0.6)]"
+                  />
+                  {/* Extra animated jetpack flame flare */}
+                  <div
+                    className="absolute -bottom-2 left-1/4 -translate-x-1/2 rounded-full blur-[2px] animate-pulse"
+                    style={{
+                      width: 14,
+                      height: Math.min(36, 18 + mult * 0.4),
+                      background: 'linear-gradient(180deg,#fef08a,#f59e0b,#ef4444,transparent)',
+                    }}
+                  />
                 </div>
               </div>
             )}
 
-            {/* Multiplier / status overlay */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-20" style={{ top: '50%' }}>
-              {isWaiting && (
-                <div className="text-center">
-                  <div className="text-white font-black text-xl sm:text-3xl tracking-widest drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] animate-pulse">
-                    TUNGGU PERMAINAN BERIKUTNYA
-                  </div>
-                  <div className="text-purple-300 text-sm mt-1">{waiting}s</div>
-                </div>
-              )}
-              {isFlying && (
-                <div
-                  className="font-black drop-shadow-[0_0_30px_rgba(251,191,36,1)]"
-                  style={{
-                    fontSize: 'clamp(2.5rem,8vw,5rem)',
-                    background: 'linear-gradient(135deg,#fde68a,#fbbf24,#f59e0b)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  {multDisplay}x
-                </div>
-              )}
-              {isCrashed && (
-                <div className="text-center">
-                  <div className="text-red-500 font-black text-2xl sm:text-4xl tracking-widest drop-shadow-[0_0_20px_rgba(239,68,68,0.9)] animate-pulse">
-                    CRASHED!
-                  </div>
-                  <div className="text-red-400 font-black text-xl">{crashAt.toFixed(2)}x</div>
-                </div>
-              )}
-            </div>
+            {/* 3. CRASHED: Spaceman spinning out of control */}
+            {isCrashed && (
+              <div
+                className="absolute z-20 pointer-events-none"
+                style={{
+                  left: `calc(${astroX}% - 38px)`,
+                  top: `calc(${astroY}% - 38px)`,
+                  animation: 'spin 0.7s linear infinite',
+                  opacity: 0.85,
+                }}
+              >
+                <img
+                  src="/games/spaceman_flying.png"
+                  alt="Crashed Spaceman"
+                  className="w-20 h-20 sm:w-24 sm:h-24 object-contain filter hue-rotate-180 drop-shadow-[0_0_25px_rgba(239,68,68,0.9)]"
+                />
+              </div>
+            )}
           </div>
 
           {/* Right column */}
@@ -531,174 +576,306 @@ export const SpacemanGameModal: React.FC<Props> = ({
           </div>
         </div>
 
-        {/* ── BOTTOM CONTROL DOCK ── */}
+        {/* ── BOTTOM CONTROL DOCK (persis referensi Pragmatic Spaceman) ── */}
         <div className="relative z-10 shrink-0 border-t border-purple-800/40"
-          style={{ background: 'linear-gradient(180deg,rgba(20,0,50,0.95),rgba(8,0,22,0.98))' }}>
+          style={{ background: 'linear-gradient(180deg, #190038 0%, #0d0020 100%)' }}>
 
-          {/* Auto-cashout row */}
-          <div className="flex flex-wrap items-center gap-3 px-3 pt-2 pb-1">
-            {/* Auto cashout full */}
-            <label className="flex items-center gap-2 cursor-pointer text-xs text-stone-300">
-              <div onClick={() => setAutoCashout(p => !p)}
-                className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${autoCashout ? 'bg-purple-600' : 'bg-stone-700'}`}>
-                <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${autoCashout ? 'translate-x-5' : 'translate-x-0.5'}`} />
+          {/* Top Row: Auto-cashout box on left + Bet presets & Main Bet Action in Center + Right Status */}
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-3 px-3 py-2.5">
+            
+            {/* Left: Auto-Cashout Box (single rounded purple panel) */}
+            <div className="rounded-2xl border border-purple-700/50 bg-[#1e053a]/80 p-2 flex flex-col gap-2 shrink-0 shadow-lg min-w-[270px]">
+              {/* Row 1: Cairkan Otomatis */}
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setAutoCashout(p => !p)}>
+                  <div className={`w-11 h-6 rounded-full relative transition-colors cursor-pointer ${autoCashout ? 'bg-purple-600' : 'bg-stone-700/70'}`}>
+                    <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${autoCashout ? 'translate-x-5' : 'translate-x-0.5'}`} />
+                  </div>
+                  <span className="text-xs font-semibold text-purple-200/90">Cairkan Otomatis</span>
+                </div>
+                <div className="flex items-center rounded-xl bg-[#120026] border border-purple-800/60 overflow-hidden">
+                  <button
+                    onClick={() => setAutoCashoutVal(v => Math.max(1.1, +(v - 0.1).toFixed(2)))}
+                    className="px-2 py-1 text-purple-400 hover:text-white cursor-pointer transition-colors"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <span className="text-amber-400 font-black text-xs min-w-[46px] text-center font-mono">
+                    {autoCashoutVal.toFixed(2)}x
+                  </span>
+                  <button
+                    onClick={() => setAutoCashoutVal(v => +(v + 0.1).toFixed(2))}
+                    className="px-2 py-1 text-purple-400 hover:text-white cursor-pointer transition-colors"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-              <span className="hidden sm:inline">Cairkan Otomatis</span>
-              <div className="flex items-center gap-1">
-                <button onClick={() => setAutoCashoutVal(v => Math.max(1.1, +(v - 0.1).toFixed(2)))}
-                  className="w-5 h-5 rounded bg-purple-900 border border-purple-600 text-purple-300 text-xs flex items-center justify-center cursor-pointer">‹</button>
-                <span className="text-amber-400 font-black text-xs w-10 text-center">{autoCashoutVal.toFixed(2)}x</span>
-                <button onClick={() => setAutoCashoutVal(v => +(v + 0.1).toFixed(2))}
-                  className="w-5 h-5 rounded bg-purple-900 border border-purple-600 text-purple-300 text-xs flex items-center justify-center cursor-pointer">›</button>
-              </div>
-            </label>
 
-            {/* Auto cashout 50% */}
-            <label className="flex items-center gap-2 cursor-pointer text-xs text-stone-300">
-              <div onClick={() => setAutoCashout50(p => !p)}
-                className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer ${autoCashout50 ? 'bg-pink-600' : 'bg-stone-700'}`}>
-                <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${autoCashout50 ? 'translate-x-5' : 'translate-x-0.5'}`} />
+              {/* Row 2: Cairkan Otomatis 50% */}
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setAutoCashout50(p => !p)}>
+                  <div className={`w-11 h-6 rounded-full relative transition-colors cursor-pointer ${autoCashout50 ? 'bg-pink-600' : 'bg-stone-700/70'}`}>
+                    <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${autoCashout50 ? 'translate-x-5' : 'translate-x-0.5'}`} />
+                  </div>
+                  <span className="text-xs font-semibold text-purple-200/90">Cairkan Otomatis 50%</span>
+                </div>
+                <div className="flex items-center rounded-xl bg-[#120026] border border-purple-800/60 overflow-hidden">
+                  <button
+                    onClick={() => setAutoCashout50Val(v => Math.max(1.1, +(v - 0.1).toFixed(2)))}
+                    className="px-2 py-1 text-purple-400 hover:text-white cursor-pointer transition-colors"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <span className="text-pink-400 font-black text-xs min-w-[46px] text-center font-mono">
+                    {autoCashout50Val.toFixed(2)}x
+                  </span>
+                  <button
+                    onClick={() => setAutoCashout50Val(v => +(v + 0.1).toFixed(2))}
+                    className="px-2 py-1 text-purple-400 hover:text-white cursor-pointer transition-colors"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-              <span className="hidden sm:inline">Cairkan Otomatis 50%</span>
-              <div className="flex items-center gap-1">
-                <button onClick={() => setAutoCashout50Val(v => Math.max(1.1, +(v - 0.1).toFixed(2)))}
-                  className="w-5 h-5 rounded bg-purple-900 border border-purple-600 text-purple-300 text-xs flex items-center justify-center cursor-pointer">‹</button>
-                <span className="text-pink-400 font-black text-xs w-10 text-center">{autoCashout50Val.toFixed(2)}x</span>
-                <button onClick={() => setAutoCashout50Val(v => +(v + 0.1).toFixed(2))}
-                  className="w-5 h-5 rounded bg-purple-900 border border-purple-600 text-purple-300 text-xs flex items-center justify-center cursor-pointer">›</button>
-              </div>
-            </label>
-          </div>
-
-          {/* Bet + action row */}
-          <div className="flex items-center gap-2 px-3 pb-2 flex-wrap sm:flex-nowrap">
-            {/* Quick bets */}
-            <div className="flex gap-1 shrink-0">
-              {[2000, 10000, 50000, 200000].map(a => (
-                <button key={a} disabled={isFlying}
-                  onClick={() => setBet(a)}
-                  className={`px-2 py-1.5 rounded-xl text-xs font-black cursor-pointer transition-all ${bet === a ? 'text-stone-950' : 'text-purple-300 border border-purple-700'}`}
-                  style={bet === a ? { background: 'linear-gradient(135deg,#fbbf24,#f59e0b)', boxShadow: '0 0 10px rgba(251,191,36,0.4)' } : { background: 'rgba(88,28,135,0.5)' }}>
-                  +{a >= 1000 ? `Rp${a / 1000}K` : a}
-                </button>
-              ))}
             </div>
 
-            {/* Bet stepper */}
-            <div className="flex items-center gap-1 px-2 py-1.5 rounded-xl border border-purple-700 shrink-0"
-              style={{ background: 'rgba(20,0,50,0.8)' }}>
-              <button onClick={() => setBet(b => Math.max(2000, b - 1000))} disabled={isFlying}
-                className="p-0.5 text-purple-400 cursor-pointer"><ChevronLeft className="w-4 h-4" /></button>
-              <div className="text-center px-2">
-                <div className="text-[9px] text-purple-400">Taruhan</div>
-                <div className="text-sm font-black text-amber-400">Rp {bet.toLocaleString('id-ID')}</div>
+            {/* Center: Bet Presets, Bet Stepper, and Action Buttons */}
+            <div className="flex-1 flex flex-col items-center gap-2 w-full max-w-2xl">
+              
+              {/* Row 1: Bet presets & central stepper */}
+              <div className="flex items-center justify-center gap-2 w-full flex-wrap">
+                {/* Left quick bets */}
+                {[2000, 10000].map(amt => (
+                  <button
+                    key={amt}
+                    disabled={isFlying}
+                    onClick={() => setBet(amt)}
+                    className={`relative px-3.5 py-1.5 rounded-full border text-xs font-black transition-all cursor-pointer shadow-md ${
+                      bet === amt
+                        ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-stone-950 border-amber-300'
+                        : 'bg-[#3b0764] hover:bg-[#581c87] text-white border-purple-600/40'
+                    }`}
+                  >
+                    <div className="absolute -top-1 -left-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border border-emerald-300 flex items-center justify-center text-[9px] font-black text-stone-950">
+                      +
+                    </div>
+                    Rp{amt / 1000}K
+                  </button>
+                ))}
+
+                {/* Main Bet Stepper (dark rounded pill) */}
+                <div className="flex items-center rounded-2xl bg-[#1d0638] border border-purple-600/50 px-2 py-0.5 shadow-inner">
+                  <button
+                    onClick={() => setBet(b => Math.max(2000, b - 1000))}
+                    disabled={isFlying}
+                    className="p-1 text-purple-300 hover:text-white disabled:opacity-40 cursor-pointer"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <div className="text-center px-4">
+                    <div className="text-[10px] text-purple-300/80 font-semibold tracking-wide">Taruhan</div>
+                    <div className="text-sm sm:text-base font-black text-white font-mono leading-tight">
+                      Rp {bet.toLocaleString('id-ID')}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setBet(b => Math.min(1500000, b + 1000))}
+                    disabled={isFlying}
+                    className="p-1 text-purple-300 hover:text-white disabled:opacity-40 cursor-pointer"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Right quick bets */}
+                {[50000, 200000].map(amt => (
+                  <button
+                    key={amt}
+                    disabled={isFlying}
+                    onClick={() => setBet(amt)}
+                    className={`relative px-3.5 py-1.5 rounded-full border text-xs font-black transition-all cursor-pointer shadow-md ${
+                      bet === amt
+                        ? 'bg-gradient-to-r from-amber-500 to-yellow-400 text-stone-950 border-amber-300'
+                        : 'bg-[#3b0764] hover:bg-[#581c87] text-white border-purple-600/40'
+                    }`}
+                  >
+                    <div className="absolute -top-1 -left-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border border-emerald-300 flex items-center justify-center text-[9px] font-black text-stone-950">
+                      +
+                    </div>
+                    Rp{amt / 1000}K
+                  </button>
+                ))}
               </div>
-              <button onClick={() => setBet(b => Math.min(1500000, b + 1000))} disabled={isFlying}
-                className="p-0.5 text-purple-400 cursor-pointer"><ChevronRight className="w-4 h-4" /></button>
-            </div>
 
-            {/* Quick add bets */}
-            {[50000, 200000].map(a => (
-              <button key={a} disabled={isFlying}
-                onClick={() => setBet(b => Math.min(1500000, b + a))}
-                className="px-2 py-1.5 rounded-xl text-xs font-black text-purple-300 border border-purple-700 cursor-pointer hidden sm:block"
-                style={{ background: 'rgba(88,28,135,0.5)' }}>
-                +Rp{a / 1000}K
-              </button>
-            ))}
+              {/* Row 2: Secondary buttons & Main Action oval button */}
+              <div className="flex items-center justify-center gap-3 w-full">
+                {/* Chart icon */}
+                <button
+                  type="button"
+                  className="w-8 h-8 rounded-full bg-[#2a0849] hover:bg-[#3d0e68] border border-purple-600/50 flex items-center justify-center text-purple-300 hover:text-white cursor-pointer shadow-sm transition-colors"
+                >
+                  <BarChart2 className="w-4 h-4" />
+                </button>
 
-            {/* Main action */}
-            <div className="flex-1 flex gap-2 min-w-0">
-              {/* Saldo info / SALDO RENDAH */}
-              <div className="flex items-center gap-2 px-2 py-1.5 rounded-xl border border-red-800 text-xs shrink-0"
-                style={{ background: 'rgba(127,29,29,0.5)' }}>
-                <BarChart2 className="w-3 h-3 text-red-400" />
-                <span className="text-red-300 font-bold">
-                  {user && user.balance < bet ? 'SALDO RENDAH' : `SALDO: Rp ${((user?.balance ?? 0) / 1000).toFixed(0)}K`}
-                </span>
-              </div>
+                {/* Undo / repeat icon */}
+                <button
+                  type="button"
+                  onClick={() => setBet(2000)}
+                  disabled={isFlying}
+                  className="w-8 h-8 rounded-full bg-[#2a0849] hover:bg-[#3d0e68] border border-purple-600/50 flex items-center justify-center text-purple-300 hover:text-white cursor-pointer shadow-sm transition-colors disabled:opacity-40"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
 
-              {/* 50% cashout */}
-              {isFlying && hasBet && !cashedOut50 && !cashedOut && (
-                <button onClick={() => doCashout50()}
-                  className="flex-1 py-2 rounded-xl text-xs font-black text-white cursor-pointer transition-all active:scale-95"
-                  style={{ background: 'linear-gradient(135deg,#be185d,#9f1239)', boxShadow: '0 0 15px rgba(244,63,94,0.4)' }}>
-                  CAIRKAN 50%<br />
-                  <span className="text-[10px]">≈ Rp {Math.round((bet / 2) * mult).toLocaleString('id-ID')}</span>
-                </button>
-              )}
+                {/* Center Main Oval Action Button */}
+                <div className="flex-1 max-w-xs flex justify-center">
+                  {!user ? (
+                    <button
+                      onClick={onOpenLogin}
+                      className="w-full py-2 px-4 rounded-full bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-stone-950 font-black text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(245,158,11,0.5)] cursor-pointer"
+                    >
+                      LOGIN UNTUK BERMAIN
+                    </button>
+                  ) : user.balance < bet && !hasBet && isWaiting ? (
+                    <div className="px-6 py-2 rounded-full border-2 border-red-600 bg-[#3b0724] text-red-400 font-black text-xs tracking-wider shadow-[0_0_15px_rgba(239,68,68,0.35)] select-none animate-pulse text-center">
+                      SALDO RENDAH
+                    </div>
+                  ) : isWaiting && !hasBet ? (
+                    <button
+                      onClick={placeBet}
+                      className="w-full py-2.5 px-6 rounded-full bg-gradient-to-r from-emerald-500 via-green-500 to-emerald-600 hover:from-emerald-400 hover:to-green-400 text-white font-black text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(16,185,129,0.5)] cursor-pointer transition-all active:scale-95"
+                    >
+                      PASANG TARUHAN
+                    </button>
+                  ) : isWaiting && hasBet ? (
+                    <button
+                      disabled
+                      className="w-full py-2 px-4 rounded-full bg-purple-950/90 border border-purple-500 text-purple-200 font-black text-xs tracking-wider cursor-not-allowed"
+                    >
+                      MENUNGGU... {waiting}s
+                    </button>
+                  ) : isFlying && hasBet && !cashedOut ? (
+                    <div className="flex gap-2 w-full">
+                      {!cashedOut50 && (
+                        <button
+                          onClick={() => doCashout50()}
+                          className="flex-1 py-1.5 px-2 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-black text-xs tracking-wider shadow-[0_0_15px_rgba(244,63,94,0.5)] cursor-pointer active:scale-95 flex flex-col items-center justify-center leading-tight"
+                        >
+                          <span>CAIRKAN 50%</span>
+                          <span className="text-[10px] font-mono opacity-90">Rp {Math.round((bet / 2) * mult).toLocaleString('id-ID')}</span>
+                        </button>
+                      )}
+                      <button
+                        onClick={() => doCashout()}
+                        className="flex-1 py-1.5 px-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-black text-xs tracking-wider shadow-[0_0_20px_rgba(16,185,129,0.5)] cursor-pointer active:scale-95 flex flex-col items-center justify-center leading-tight"
+                      >
+                        <span>CAIRKAN SEMUA</span>
+                        <span className="text-[10px] font-mono opacity-90">Rp {Math.round((cashedOut50 ? bet / 2 : bet) * mult).toLocaleString('id-ID')}</span>
+                      </button>
+                    </div>
+                  ) : isFlying && hasBet && cashedOut ? (
+                    <div className="px-6 py-2 rounded-full bg-emerald-950/80 border border-emerald-500 text-emerald-300 font-black text-xs tracking-wider text-center">
+                      ✓ DICAIRKAN +Rp {roundWin.toLocaleString('id-ID')}
+                    </div>
+                  ) : isCrashed ? (
+                    <div className="px-6 py-2 rounded-full bg-red-950/80 border border-red-600 text-red-400 font-black text-xs tracking-wider text-center">
+                      CRASHED @ {crashAt.toFixed(2)}x
+                    </div>
+                  ) : (
+                    <div className="px-6 py-2 rounded-full bg-[#1b0730] border border-purple-800/60 text-purple-300/80 font-bold text-xs tracking-wider text-center">
+                      MENUNGGU RONDE...
+                    </div>
+                  )}
+                </div>
 
-              {/* Main bet / cashout */}
-              {!user ? (
-                <button onClick={onOpenLogin}
-                  className="flex-1 py-2 rounded-xl font-black text-sm text-stone-950 cursor-pointer transition-all active:scale-95"
-                  style={{ background: 'linear-gradient(135deg,#fbbf24,#f59e0b)', boxShadow: '0 0 20px rgba(251,191,36,0.5)' }}>
-                  LOGIN UNTUK BERMAIN
-                </button>
-              ) : isWaiting && !hasBet ? (
-                <button onClick={placeBet}
-                  className="flex-1 py-2 rounded-xl font-black text-sm text-stone-950 cursor-pointer transition-all active:scale-95"
-                  style={{ background: 'linear-gradient(135deg,#fbbf24,#f59e0b)', boxShadow: '0 0 20px rgba(251,191,36,0.5)' }}>
-                  PASANG TARUHAN
-                </button>
-              ) : isWaiting && hasBet ? (
-                <button disabled
-                  className="flex-1 py-2 rounded-xl font-black text-sm cursor-not-allowed"
-                  style={{ background: 'rgba(20,0,50,0.8)', color: '#a78bfa', border: '1px solid #7c3aed' }}>
-                  MENUNGGU... {waiting}s
-                </button>
-              ) : isFlying && hasBet && !cashedOut ? (
-                <button onClick={() => doCashout()}
-                  className="flex-1 py-2 rounded-xl font-black text-sm cursor-pointer transition-all active:scale-95"
-                  style={{ background: 'linear-gradient(135deg,#16a34a,#15803d)', boxShadow: '0 0 20px rgba(34,197,94,0.5)', color: 'white' }}>
-                  CAIRKAN SEMUA<br />
-                  <span className="text-xs">≈ Rp {Math.round((cashedOut50 ? bet / 2 : bet) * mult).toLocaleString('id-ID')}</span>
-                </button>
-              ) : isFlying && hasBet && cashedOut ? (
-                <button disabled className="flex-1 py-2 rounded-xl font-black text-sm cursor-not-allowed text-emerald-400 border border-emerald-700"
-                  style={{ background: 'rgba(6,78,59,0.4)' }}>
-                  ✓ DICAIRKAN +Rp {roundWin.toLocaleString('id-ID')}
-                </button>
-              ) : isCrashed ? (
-                <button disabled className="flex-1 py-2 rounded-xl font-black text-sm cursor-not-allowed"
-                  style={{ background: 'rgba(127,29,29,0.5)', color: '#f87171', border: '1px solid #991b1b' }}>
-                  CRASHED {crashAt.toFixed(2)}x
-                </button>
-              ) : (
-                <button disabled className="flex-1 py-2 rounded-xl font-black text-sm cursor-not-allowed text-stone-500 border border-stone-800"
-                  style={{ background: 'rgba(20,20,20,0.6)' }}>
-                  MENUNGGU RONDE...
-                </button>
-              )}
-
-              {/* 2x badge & refresh */}
-              <div className="flex items-center gap-1 shrink-0">
-                <div className="w-8 h-8 rounded-full border border-purple-600 flex items-center justify-center text-xs font-black text-purple-300 cursor-pointer"
-                  style={{ background: 'rgba(88,28,135,0.5)' }}>
+                {/* 2x multiplier button */}
+                <button
+                  type="button"
+                  onClick={() => setBet(b => Math.min(1500000, b * 2))}
+                  disabled={isFlying}
+                  className="w-8 h-8 rounded-full bg-[#2a0849] hover:bg-[#3d0e68] border border-purple-600/50 flex items-center justify-center text-xs font-black text-purple-300 hover:text-white cursor-pointer shadow-sm transition-colors disabled:opacity-40"
+                >
                   2x
-                </div>
-                <div className="w-8 h-8 rounded-full border border-purple-600 flex items-center justify-center cursor-pointer text-purple-300"
-                  style={{ background: 'rgba(88,28,135,0.5)' }}>
+                </button>
+
+                {/* Repeat / auto-play icon */}
+                <button
+                  type="button"
+                  onClick={() => setBet(2000)}
+                  disabled={isFlying}
+                  className="w-8 h-8 rounded-full bg-[#2a0849] hover:bg-[#3d0e68] border border-purple-600/50 flex items-center justify-center text-purple-300 hover:text-white cursor-pointer shadow-sm transition-colors disabled:opacity-40"
+                >
                   <RefreshCw className="w-3.5 h-3.5" />
-                </div>
+                </button>
               </div>
+            </div>
+
+            {/* Right Status (0 👤 | 0 👤 DICAIRKAN Rp 0) */}
+            <div className="hidden lg:flex items-center gap-2 text-xs font-bold text-stone-300 shrink-0 select-none">
+              <span>0 👤</span>
+              <span className="text-purple-600">|</span>
+              <span className="text-emerald-400">0 👤</span>
+              <span className="bg-emerald-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full tracking-wider shadow-sm">
+                DICAIRKAN
+              </span>
+              <span className="text-amber-400 font-black font-mono">
+                Rp {roundWin.toLocaleString('id-ID')}
+              </span>
             </div>
           </div>
 
-          {/* ── HISTORY RIBBON ── */}
-          <div className="flex items-center gap-1.5 overflow-x-auto px-3 py-1.5 border-t border-purple-900/40"
-            style={{ background: 'rgba(5,0,15,0.8)' }}>
-            <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded border shrink-0"
-              style={{ background: 'rgba(245,158,11,0.15)', borderColor: 'rgba(245,158,11,0.4)', color: '#fbbf24' }}>
-              DIMAINKAN
-            </span>
-            {history.map((h, i) => (
-              <span key={i}
-                className="px-2 py-0.5 rounded-lg text-xs font-black whitespace-nowrap shrink-0"
-                style={{ color: multColor(h.mult), background: `${multColor(h.mult)}15`, border: `1px solid ${multColor(h.mult)}40` }}>
-                {h.mult.toFixed(2)}x
-              </span>
-            ))}
+          {/* ── BOTTOM HISTORY CHEVRON RIBBON (persis referensi foto) ── */}
+          <div className="flex items-center gap-2 overflow-x-auto px-3 py-1.5 border-t border-purple-900/50 bg-[#0c0018]/90 select-none custom-scrollbar">
+            
+            {/* Saldo & Total Taruhan Box */}
+            <div className="flex items-center gap-3 px-3 py-1 bg-[#16002c] border border-purple-800/60 rounded-xl shrink-0 shadow-inner">
+              <div>
+                <div className="text-[9px] text-purple-300/80 font-bold uppercase leading-none">Saldo</div>
+                <div className="text-xs font-black text-white font-mono leading-tight mt-0.5">
+                  Rp {(user?.balance ?? 0).toLocaleString('id-ID')}
+                </div>
+              </div>
+              <div className="w-[1px] h-6 bg-purple-900/60" />
+              <div>
+                <div className="text-[9px] text-purple-300/80 font-bold uppercase leading-none">Total Taruhan</div>
+                <div className="text-xs font-black text-white font-mono leading-tight mt-0.5">
+                  Rp {hasBet ? bet.toLocaleString('id-ID') : '0'}
+                </div>
+              </div>
+            </div>
+
+            {/* Interconnected Chevron Arrow Badges */}
+            <div className="flex items-center overflow-x-auto py-0.5 shrink-0">
+              {/* First item: Yellow pill countdown */}
+              <div className="bg-yellow-400 text-stone-950 px-3 py-1 rounded-l-full font-black text-xs shrink-0 flex items-center shadow-md select-none mr-0.5">
+                {isWaiting ? `${waiting}s` : '5s'}
+              </div>
+
+              {/* Multiplier Chevron Chain */}
+              {history.map((h, i) => {
+                const m = h.mult;
+                let grad = 'from-[#0284c7] to-[#0ea5e9] text-white'; // cyan default
+                if (m <= 1.05) grad = 'from-[#475569] to-[#334155] text-stone-300';
+                else if (m < 2.0) grad = 'from-[#0284c7] to-[#0ea5e9] text-white';
+                else if (m < 10.0) grad = 'from-[#7c3aed] to-[#6d28d9] text-white';
+                else if (m < 50.0) grad = 'from-[#db2777] to-[#be185d] text-white';
+                else grad = 'from-[#f59e0b] to-[#d97706] text-stone-950 font-black';
+
+                return (
+                  <div
+                    key={i}
+                    className={`relative px-3.5 py-1 text-[11px] font-black tracking-tight shrink-0 flex items-center justify-center min-w-[54px] shadow-sm bg-gradient-to-r ${grad}`}
+                    style={{
+                      clipPath: 'polygon(0% 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 0% 100%, 8px 50%)',
+                      marginLeft: '-4px',
+                    }}
+                  >
+                    {m.toFixed(2)}x
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
