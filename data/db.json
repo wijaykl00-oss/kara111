@@ -1,0 +1,136 @@
+{
+  "users": [
+    {
+      "id": "user-demo-1",
+      "username": "kara_member",
+      "password": "password123",
+      "fullName": "Member Setia Kara111",
+      "phone": "081234567890",
+      "bankName": "BCA",
+      "accountNumber": "8271928374",
+      "accountHolder": "KARA MEMBER",
+      "balance": 250000,
+      "vipLevel": "Gold",
+      "createdAt": "2026-09-04T15:36:48.755Z",
+      "favorites": [
+        "spaceman",
+        "sweet-bonanza",
+        "mahjong-ways-2"
+      ]
+    }
+  ],
+  "transactions": [
+    {
+      "id": "TX-WD-1788536728345-694",
+      "userId": "user-demo-1",
+      "username": "kara_member",
+      "type": "WITHDRAW",
+      "amount": 50000,
+      "bankName": "BCA",
+      "accountNumber": "8271928374",
+      "accountHolder": "KARA MEMBER",
+      "status": "APPROVED",
+      "notes": "Withdraw to BCA",
+      "createdAt": "2026-09-04T15:45:28.345Z"
+    },
+    {
+      "id": "TX-DP-1788536725754-199",
+      "userId": "user-demo-1",
+      "username": "kara_member",
+      "type": "DEPOSIT",
+      "amount": 50000,
+      "bankName": "BCA",
+      "status": "APPROVED",
+      "notes": "Deposit via BCA",
+      "createdAt": "2026-09-04T15:45:25.754Z"
+    },
+    {
+      "id": "TX-DP-001",
+      "userId": "user-demo-1",
+      "username": "kara_member",
+      "type": "DEPOSIT",
+      "amount": 200000,
+      "bankName": "BCA",
+      "status": "APPROVED",
+      "notes": "Deposit Otomatis QRIS / Transfer BCA",
+      "createdAt": "2026-09-04T13:36:48.756Z"
+    },
+    {
+      "id": "TX-SPIN-002",
+      "userId": "user-demo-1",
+      "username": "kara_member",
+      "type": "SPIN_WIN",
+      "amount": 50000,
+      "bankName": "KARA111 WHEEL",
+      "status": "APPROVED",
+      "notes": "Hadiah Putar Roda Keberuntungan",
+      "createdAt": "2026-09-04T14:36:48.756Z"
+    }
+  ],
+  "totoResults": [
+    {
+      "id": "1",
+      "market": "LOTTO GENTING 19",
+      "code": "LG-19",
+      "result": "9398",
+      "time": "19:31:22",
+      "date": "Hari Ini"
+    },
+    {
+      "id": "2",
+      "market": "LOTTO GENTING 22",
+      "code": "LG-22",
+      "result": "7229",
+      "time": "22:31:22",
+      "date": "Hari Ini"
+    },
+    {
+      "id": "3",
+      "market": "LOTTO GENTING 20",
+      "code": "LG-20",
+      "result": "9880",
+      "time": "20:31:22",
+      "date": "Hari Ini"
+    },
+    {
+      "id": "4",
+      "market": "LOTTO GENTING 21",
+      "code": "LG-21",
+      "result": "2176",
+      "time": "21:31:22",
+      "date": "Hari Ini"
+    },
+    {
+      "id": "5",
+      "market": "SINGAPORE 4D",
+      "code": "SGP",
+      "result": "5421",
+      "time": "17:45:00",
+      "date": "Hari Ini"
+    },
+    {
+      "id": "6",
+      "market": "HONGKONG POOLS",
+      "code": "HK",
+      "result": "8812",
+      "time": "23:00:00",
+      "date": "Hari Ini"
+    }
+  ],
+  "totoBets": [],
+  "gameLikes": {
+    "ayam-nekat": 887,
+    "sweet-bonanza": 416,
+    "mahjong-wins-3": 989,
+    "fortune-olympus": 123,
+    "candyland": 491,
+    "spaceman": 8473,
+    "mega-wheel": 664,
+    "big-bass-crash": 654,
+    "mahjong-ways-2": 3434,
+    "mahjong-ways": 3164,
+    "high-flyer": 1460,
+    "gates-of-olympus": 9520,
+    "starlight-princess": 7310
+  }
+}
